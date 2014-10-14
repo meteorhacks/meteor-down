@@ -1,0 +1,15 @@
+{
+  "name": "meteor-shower",
+  "version": "0.0.0",
+  "description": "Load testing for Meteor",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Meteorhacks",
+  "license": "MIT",
+  "dependencies": {
+    "ddp": "0.8.x",
+    "underscore": "1.7.x"
+  }
+}
