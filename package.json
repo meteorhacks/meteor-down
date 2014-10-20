@@ -1,5 +1,5 @@
 {
-  "name": "mdown",
+  "name": "meteor-down",
   "version": "0.0.0",
   "description": "Load testing for Meteor",
   "repository": {
