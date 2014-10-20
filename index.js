@@ -3,17 +3,17 @@ var util = require('util');
 var events = require('events');
 var Client = require('./lib/client.js');
 
-function MeteorShower(action) {
+function MeteorDown(action) {
   this.action = action;
 }
 
-MeteorShower.prototype.run = function(options) {
+MeteorDown.prototype.run = function(options) {
   for(var i=0; i<options.concurrency; ++i) {
     this.dispatch(options);
   }
 };
 
-MeteorShower.prototype.dispatch = function(options) {
+MeteorDown.prototype.dispatch = function(options) {
   var self = this;
   var client = new Client({
     url: options.url,
@@ -38,5 +38,5 @@ function pickRandom (array) {
   return array[_.random(array.length-1)];
 }
 
-module.exports = MeteorShower;
-MeteorShower.Client = Client;
+module.exports = MeteorDown;
+MeteorDown.Client = Client;

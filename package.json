@@ -1,5 +1,5 @@
 {
-  "name": "meteor-shower",
+  "name": "mdown",
   "version": "0.0.0",
   "description": "Load testing for Meteor",
   "main": "index.js",
