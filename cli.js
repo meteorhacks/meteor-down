@@ -10,8 +10,8 @@ if(!filePath) {
 }
 
 var content = fs.readFileSync(filePath).toString();
-var scriptFn = new Function('MeteorDown', content);
-scriptFn(MeteorDown);
+var scriptFn = new Function('MeteorDown', 'require', content);
+scriptFn(MeteorDown, require);
 
 /* ------------------------------------------------------------------------- */
 
