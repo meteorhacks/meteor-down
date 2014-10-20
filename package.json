@@ -1,6 +1,6 @@
 {
   "name": "meteor-down",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Load testing for Meteor",
   "repository": {
     "type": "git",
