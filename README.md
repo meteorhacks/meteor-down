@@ -1,32 +1,21 @@
-MeteorShower
-============
+MeteorDown
+==========
 
-Load testing for Meteor
+Test runner for MeteorDown load testing framework. Install the `mdown` binary with `npm -g i meteor-down` and run load tests with `mdown script.js` command. You must have the `meteor-down` smart package installed before running tests. tests.
 
-Installation
-------------
+Example Script
+--------------
 
-  - Install the meteor-shower smart package `meteorhacks:meteor-shower`
-  - Initialize meteor shower with `MeteorShower.init('SECRET_RANDOM_ID')` (server side)
-  - Use the npm module `meteor-shower` when writing tests
-
-Example
--------
-
-    var MeteorShower = require('meteor-shower');
-    new MeteorShower(function (error, client) {
+    var mdown = new MeteorDown(function (error, client) {
       client.call('add', x, y, function (err, res) {
         console.log(x+' + '+y+' is '+res);
         client.kill();
       });
-    }).run({
-      concurrency: 10,
-      url: 'http://localhost:3000',
-      key: 'SECRET_RANDOM_ID',
-      auth: {userId: ['JydhwL4cCRWvt3TiY', 'bg9MZZwFSf8EsFJM4']}
     });
 
-Note
-----
-
-  - Authentication details given to MeteorShower must exist.
+    mdown.run({
+      concurrency: 10,
+      url: 'http://localhost:3000',
+      key: 'YOUR_SUPER_SECRET_KEY',
+      auth: {userId: ['JydhwL4cCRWvt3TiY', 'bg9MZZwFSf8EsFJM4']}
+    });

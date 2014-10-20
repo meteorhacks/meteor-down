@@ -2,12 +2,22 @@
   "name": "mdown",
   "version": "0.0.0",
   "description": "Load testing for Meteor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meteorhacks/mdown.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "bin": {
+    "mdown": "./cli.js"
   },
   "author": "Meteorhacks",
   "license": "MIT",
+  "devDependencies": {
+    "mocha": "1.21.x"
+  },
   "dependencies": {
     "ddp": "0.8.x",
     "underscore": "1.7.x"
