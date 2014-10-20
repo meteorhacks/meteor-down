@@ -1,7 +1,7 @@
 MeteorDown
 ==========
 
-Test runner for MeteorDown load testing framework. Install the `mdown` binary with `npm -g i meteor-down` and run load tests with `mdown script.js` command. You must have the `meteor-down` smart package installed before running tests. tests.
+Test runner for MeteorDown load testing framework. Install the `mdown` binary with `npm -g i meteor-down` and run load tests with `mdown script.js` command. You must have the `meteor-down` smart package installed before running tests.
 
 Example Script
 --------------
