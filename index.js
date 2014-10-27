@@ -15,7 +15,13 @@ MeteorDown.prototype.run = function(options) {
 
 MeteorDown.prototype.dispatch = function(options) {
   var self = this;
-  var clientOptions = {url: options.url, key: options.key};
+  // TODO pass whole 'options' object to Client and pick userId there
+  var clientOptions = {
+    url: options.url,
+    key: options.key,
+    stats: Stats
+  };
+
   if(options.auth && options.auth.userId && options.auth.userId.length) {
     clientOptions.auth = {userId: pickRandom(options.auth.userId)}
   }
