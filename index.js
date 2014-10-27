@@ -15,11 +15,12 @@ MeteorDown.prototype.run = function(options) {
 
 MeteorDown.prototype.dispatch = function(options) {
   var self = this;
-  var client = new Client({
-    url: options.url,
-    key: options.key,
-    auth: {userId: pickRandom(options.auth.userId)}
-  });
+  var clientOptions = {url: options.url, key: options.key};
+  if(options.auth && options.auth.userId && options.auth.userId.length) {
+    clientOptions.auth = {userId: pickRandom(options.auth.userId)}
+  }
+
+  var client = new Client(clientOptions);
 
   client.on('disconnected', function () {
     self.dispatch(options);

@@ -25,4 +25,14 @@ suite('Client', function () {
     })
 
   })
+
+  suite('initialize', function () {
+
+    test('connection error')
+
+    test('with login information')
+
+    test('without login information')
+
+  })
 })
