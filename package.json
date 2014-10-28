@@ -6,12 +6,12 @@
     "type": "git",
     "url": "https://github.com/meteorhacks/mdown.git"
   },
-  "main": "index.js",
+  "main": "./lib/mdown.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha"
   },
   "bin": {
-    "mdown": "./cli.js"
+    "mdown": "./bin/mdown.js"
   },
   "author": "Meteorhacks",
   "license": "MIT",
