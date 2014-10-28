@@ -31,8 +31,9 @@ process.on('SIGINT', function() {
 /* ------------------------------------------------------------------------- */
 
 function showHelp () {
+  // TODO improve help and CLI interface
   console.log(
     'USAGE:\n'+
-    '  mdown <path-to-scriapt>\n'
+    '  mdown <path-to-script>\n'
   );
 }
