@@ -22,14 +22,25 @@ suite('Stats', function () {
   });
 
   suite('reporting', function () {
-    test('without fields', function () {
-      var mock = {data: {}, _getData: Function.prototype, start: new Date()};
+    test('get() without fields', function () {
+      var mock = {data: {}, start: new Date()};
+      mock._getData = Stats.prototype._getData;
       var stats = Stats.prototype.get.call(mock);
       assert.equal(stats.start instanceof Date, true);
       assert.equal(stats.end instanceof Date, true);
-    })
+    });
 
-    test('without values', function () {
+    test('get() with fields', function () {
+      var mock = {data: {'field-name': {}}};
+      mock._getData = Stats.prototype._getData;
+      var stats = Stats.prototype.get.call(mock);
+      assert.deepEqual(stats.data['field-name'], {
+        summary: {total: 0, count: 0, average: 0},
+        breakdown: []
+      })
+    });
+
+    test('_getData() without values', function () {
       var mock = {data: {'field-name': {}}};
       var data = Stats.prototype._getData.call(mock);
       assert.deepEqual(data, [
@@ -39,7 +50,7 @@ suite('Stats', function () {
       ]);
     });
 
-    test('with values', function () {
+    test('_getData() with values', function () {
       var mock = {data: {'field-name': {x: [2, 2, 11], y: [4, 6]}}};
       var data = Stats.prototype._getData.call(mock);
       assert.deepEqual(data, [
@@ -51,6 +62,5 @@ suite('Stats', function () {
           ]}
       ]);
     });
-
   })
 })
