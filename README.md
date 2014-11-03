@@ -80,17 +80,15 @@ Examples
 
 ### Calling a Method
 
-####Meteor Server
-
 ~~~js
+// Meteor Application
 Meteor.methods({
   add: function (x, y) {return x + y }
 })
 ~~~
 
-####MeteorDown Script
-
 ~~~js
+// MeteorDown Script
 mdown.init(function () {
   Meteor.call('add', 5, 6, function (err, res) {
     console.log('5 + 6 is ' + res);
@@ -101,17 +99,15 @@ mdown.init(function () {
 
 ### Subscribing
 
-####Meteor Server
-
 ~~~js
+// Meteor Application
 Meteor.publish({
   items: function () { return Items.find() }
 })
 ~~~
 
-####MeteorDown Script
-
 ~~~js
+// MeteorDown Script
 mdown.init(function () {
   Meteor.subscribe('items', function () {
     console.log('Subscription is ready');
