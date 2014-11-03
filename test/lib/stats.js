@@ -3,37 +3,47 @@ var assert = require('assert');
 var Stats = require('../../lib/stats.js');
 
 suite('Stats', function () {
-  test('constructor', function () {
-    var mock = {};
-    Stats.call(mock);
-    assert.deepEqual(mock, {data: {'method': {}, 'subscription': {}}});
+  suite('constructor', function () {
+    test('reset', function () {
+      var mock = {};
+      Stats.prototype.reset.call(mock);
+      assert.deepEqual(mock, {
+        data: {
+          'method-response-time': {},
+          'subscription-response-time': {}
+        }
+      });
+    });
   })
 
   suite('tracking', function () {
-    test('method', function () {
-      var mock = {data: {'method': {}}};
-      var rand = _.random(1000);
-      Stats.prototype.track.call(mock, 'method', 'x', rand);
-      assert.deepEqual(mock.data.method, {'x': [rand]});
+    test('method-response-time', function () {
+      var mock = {data: {'method-response-time': {}}};
+      var r = _.random(1000);
+      Stats.prototype.track.call(mock, 'method-response-time', 'x', r);
+      assert.deepEqual(mock.data['method-response-time'], {'x': [r]});
     });
 
-    test('subscription', function () {
-      var mock = {data: {'subscription': {}}};
-      var rand = _.random(1000);
-      Stats.prototype.track.call(mock, 'subscription', 'x', rand);
-      assert.deepEqual(mock.data.subscription, {'x': [rand]});
+    test('subscription-response-time', function () {
+      var mock = {data: {'subscription-response-time': {}}};
+      var r = _.random(1000);
+      Stats.prototype.track.call(mock, 'subscription-response-time', 'x', r);
+      assert.deepEqual(mock.data['subscription-response-time'], {'x': [r]});
     });
   });
 
   suite('reporting', function () {
     test('without data', function () {
-      var mock = {data: {'method': {}, 'subscription': {}}};
+      var mock = {data: {
+        'method-response-time': {},
+        'subscription-response-time': {}
+      }};
       var stats = Stats.prototype.get.call(mock);
       assert.deepEqual(stats, [
-        { type: 'method',
+        { type: 'method-response-time',
           summary: {total: 0, count: 0, average: 0},
           breakdown: []},
-        { type: 'subscription',
+        { type: 'subscription-response-time',
           summary: {total: 0, count: 0, average: 0},
           breakdown: []}
       ]);
@@ -41,18 +51,18 @@ suite('Stats', function () {
 
     test('with data', function () {
       var mock = {data: {
-        'method': {x: [2, 2, 11], y: [4, 6]},
-        'subscription': {a: [10]}
+        'method-response-time': {x: [2, 2, 11], y: [4, 6]},
+        'subscription-response-time': {a: [10]}
       }};
       var stats = Stats.prototype.get.call(mock);
       assert.deepEqual(stats, [
-        { type: 'method',
+        { type: 'method-response-time',
           summary: {total: 25, count: 5, average: 5},
           breakdown: [
             {name: 'x', total: 15, count: 3, average: 5},
             {name: 'y', total: 10, count: 2, average: 5}
           ]},
-        { type: 'subscription',
+        { type: 'subscription-response-time',
           summary: {total: 10, count: 1, average: 10},
           breakdown: [
             {name: 'a', total: 10, count: 1, average: 10}
