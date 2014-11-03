@@ -10,9 +10,6 @@ Installation
 
 Install MeteorDown globally to make the `mdown` command available. It's easier to run tests this way because you don't have to install the npm module everywhere. If you use the `mdown` command, it will also log useful performance statistics every 5 seconds.
 
-Writing Tests
--------------
-
 Scripts loaded with `mdown` command contains a global variable named `mdown`. Code at `/* Test Body */` will be executed by each connected client. Tests can be customized with `/* Test Options */`.
 
 ~~~js
@@ -24,6 +21,35 @@ mdown.run({
   /* Test Options */
 });
 ~~~
+
+Writing Tests
+-------------
+
+Writing tests is made similar to writing Meteor client side code. The function given to `mdown.init` will receive the ddp client as the first argument. This ddp client is based on [node-ddp-client](https://github.com/oortcloud/node-ddp-client) but with some changes. This client will be already connected to the Meteor application (and authenticated if necessary options are given). Let's name the ddp client Meteor.
+
+###Meteor.call
+
+    Meteor.call ('name'[, args*], callback)
+
+Call a Meteor method. Just like the browser client, the callback will receive 2 arguments Error and the Result.
+
+###Meteor.subscribe
+
+    Meteor.subscribe ('name'[, args*], callback)
+
+The callback function will be called when the subscription is ready and all initial data is loaded to the client.
+
+###Meteor.kill
+
+    Meteor.kill()
+
+Disconnect from the server. As soon as this is called, another client will connect to the server and run load test code.
+
+###Meteor.collections
+
+    var Collection = Meteor.collections['name']
+
+A dictionary of all client side collections. Data received from subscriptions will be available here.
 
 Authentication
 --------------
