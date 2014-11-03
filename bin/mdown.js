@@ -2,6 +2,7 @@
 
 var _ = require('underscore');
 var fs = require('fs');
+var util = require('util');
 var MeteorDown = require('../');
 
 var filePath = process.argv[2];
@@ -17,17 +18,10 @@ scriptFn(mdown, require, _);
 
 /* ------------------------------------------------------------------------- */
 
-process.on('SIGINT', function() {
-  var stats = mdown.stats.get();
-  _.each(stats.data, function (result) {
-    console.log('\n%s x %d (response-time: %dms)', result.type, result.summary.count, result.summary.average);
-    _.each(result.breakdown, function (item) {
-      console.log(' - %s x %d (response-time: %dms)', item.name, item.count, item.average);
-    });
-  });
-
-  process.exit();
-});
+setInterval(function () {
+  printStats(mdown.stats.get());
+  mdown.stats.reset();
+}, 1000*5);
 
 /* ------------------------------------------------------------------------- */
 
@@ -37,4 +31,37 @@ function showHelp () {
     'USAGE:\n'+
     '  mdown <path-to-script>\n'
   );
+}
+
+function printStats (stats) {
+  var duration = stats.end - stats.start;
+
+  console.log('--------------------------------------------------')
+  console.log('Time   : %s', stats.end.toLocaleString());
+
+  if(stats.data['method-response-time']) {
+    var methodSummary = stats.data['method-response-time'].summary;
+    var methodBreakdown = stats.data['method-response-time'].breakdown;
+    console.log('Method : average: %d/min %dms ',
+      parseInt(methodSummary.count * 60000 / duration),
+      parseInt(methodSummary.total / methodSummary.count));
+    methodBreakdown.forEach(function (item) {
+      console.log('         %s: %d/min %dms', item.name,
+        parseInt(item.count * 60000 / duration),
+        parseInt(item.total / item.count));
+    });
+  }
+
+  if(stats.data['pubsub-response-time']) {
+    var pubsubSummary = stats.data['pubsub-response-time'].summary;
+    var pubsubBreakdown = stats.data['pubsub-response-time'].breakdown;
+    console.log('PubSub : average: %d/min %dms ',
+      parseInt(pubsubSummary.count * 60000 / duration),
+      parseInt(pubsubSummary.total / pubsubSummary.count));
+    pubsubBreakdown.forEach(function (item) {
+      console.log('         %s: %d/min %dms', item.name,
+        parseInt(item.count * 60000 / duration),
+        parseInt(item.total / item.count));
+    });
+  }
 }
