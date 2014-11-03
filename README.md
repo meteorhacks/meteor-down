@@ -89,7 +89,7 @@ Meteor.methods({
 
 ~~~js
 // MeteorDown Script
-mdown.init(function () {
+mdown.init(function (Meteor) {
   Meteor.call('add', 5, 6, function (err, res) {
     console.log('5 + 6 is ' + res);
     Meteor.kill();
@@ -108,7 +108,7 @@ Meteor.publish({
 
 ~~~js
 // MeteorDown Script
-mdown.init(function () {
+mdown.init(function (Meteor) {
   Meteor.subscribe('items', function () {
     console.log('Subscription is ready');
     console.log(Meteor.collections.items);
