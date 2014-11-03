@@ -35,7 +35,7 @@ suite('Stats', function () {
       mock._getData = Stats.prototype._getData;
       var stats = Stats.prototype.get.call(mock);
       assert.deepEqual(stats.data['field-name'], {
-        summary: {total: 0, count: 0, average: 0},
+        summary: {total: 0, count: 0},
         breakdown: []
       })
     });
@@ -45,7 +45,7 @@ suite('Stats', function () {
       var data = Stats.prototype._getData.call(mock);
       assert.deepEqual(data, [
         { type: 'field-name',
-          summary: {total: 0, count: 0, average: 0},
+          summary: {total: 0, count: 0},
           breakdown: []}
       ]);
     });
@@ -55,10 +55,10 @@ suite('Stats', function () {
       var data = Stats.prototype._getData.call(mock);
       assert.deepEqual(data, [
         { type: 'field-name',
-          summary: {total: 25, count: 5, average: 5},
+          summary: {total: 25, count: 5},
           breakdown: [
-            {name: 'x', total: 15, count: 3, average: 5},
-            {name: 'y', total: 10, count: 2, average: 5}
+            {name: 'x', total: 15, count: 3},
+            {name: 'y', total: 10, count: 2}
           ]}
       ]);
     });
