@@ -7,7 +7,8 @@ suite('Stats', function () {
     test('reset', function () {
       var mock = {};
       Stats.prototype.reset.call(mock);
-      assert.deepEqual(mock, {data: {}});
+      assert.deepEqual(mock.data, {});
+      assert.equal(mock.start instanceof Date, true)
     });
   })
 
@@ -21,20 +22,27 @@ suite('Stats', function () {
   });
 
   suite('reporting', function () {
-    test('without data', function () {
-      var mock = {data: {'field-name': {}}};
+    test('without fields', function () {
+      var mock = {data: {}, _getData: Function.prototype, start: new Date()};
       var stats = Stats.prototype.get.call(mock);
-      assert.deepEqual(stats, [
+      assert.equal(stats.start instanceof Date, true);
+      assert.equal(stats.end instanceof Date, true);
+    })
+
+    test('without values', function () {
+      var mock = {data: {'field-name': {}}};
+      var data = Stats.prototype._getData.call(mock);
+      assert.deepEqual(data, [
         { type: 'field-name',
           summary: {total: 0, count: 0, average: 0},
           breakdown: []}
       ]);
     });
 
-    test('with data', function () {
+    test('with values', function () {
       var mock = {data: {'field-name': {x: [2, 2, 11], y: [4, 6]}}};
-      var stats = Stats.prototype.get.call(mock);
-      assert.deepEqual(stats, [
+      var data = Stats.prototype._getData.call(mock);
+      assert.deepEqual(data, [
         { type: 'field-name',
           summary: {total: 25, count: 5, average: 5},
           breakdown: [

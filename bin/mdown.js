@@ -18,7 +18,8 @@ scriptFn(mdown, require, _);
 /* ------------------------------------------------------------------------- */
 
 process.on('SIGINT', function() {
-  _.each(mdown.stats.get(), function (result) {
+  var stats = mdown.stats.get();
+  _.each(stats.data, function (result) {
     console.log('\n%s x %d (response-time: %dms)', result.type, result.summary.count, result.summary.average);
     _.each(result.breakdown, function (item) {
       console.log(' - %s x %d (response-time: %dms)', item.name, item.count, item.average);
