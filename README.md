@@ -1,7 +1,7 @@
 MeteorDown
 ==========
 
-Test runner for MeteorDown load testing framework. Install the `mdown` binary with `npm -g i meteor-down` and run load tests with `mdown script.js` command. In order to test with registered users uou must have the `meteorhacks:meteor-down` [smart package](https://atmospherejs.com/meteorhacks/meteor-down) installed on your app before running tests.
+Test runner for MeteorDown load testing framework. Install the `mdown` binary with `npm -g i meteor-down` and run load tests with `mdown script.js` command. In order to test with registered users you must have the `meteorhacks:meteor-down` [smart package](https://atmospherejs.com/meteorhacks/meteor-down) installed on your app before running tests.
 
 Example Script
 --------------
