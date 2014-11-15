@@ -127,15 +127,16 @@ mdown.init(function (Meteor) {
 
 ~~~js
 // Meteor Application
+Items = new Meteor.Collection('items');
 Meteor.publish({
-  items: function () { return Items.find() }
+  allitems: function () { return Items.find() }
 })
 ~~~
 
 ~~~js
 // MeteorDown Script
 mdown.init(function (Meteor) {
-  Meteor.subscribe('items', function () {
+  Meteor.subscribe('allitems', function () {
     console.log('Subscription is ready');
     console.log(Meteor.collections.items);
     Meteor.kill();
