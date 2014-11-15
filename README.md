@@ -92,6 +92,7 @@ The maximum number of clients connects to the application at any given time. The
 ###url
 
 Meteor application url.
+**NOTE: This should only have the domain and the port (example: localhost:3000). Meteor-down does not support routes at the moment.**
 
 ###key
 
