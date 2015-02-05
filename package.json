@@ -11,7 +11,7 @@
     "test": "./node_modules/mocha/bin/mocha"
   },
   "bin": {
-    "mdown": "./bin/mdown.js"
+    "meteor-down": "./bin/meteor-down.js"
   },
   "author": "Meteorhacks",
   "license": "MIT",
