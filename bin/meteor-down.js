@@ -4,6 +4,7 @@
 // we don't need pooling here
 require('http').globalAgent.maxSockets = 999999;
 
+var vm = require('vm');
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
@@ -16,9 +17,16 @@ if(!filePath) {
 }
 
 var mdown = new MeteorDown();
+
+// run the script
 var content = fs.readFileSync(filePath).toString();
-var scriptFn = new Function('mdown', 'require', '_', content);
-scriptFn(mdown, require, _);
+var context = {
+  global: global,
+  require: require,
+  mdown: mdown,
+  process: process
+};
+vm.runInNewContext(content, context);
 
 /* ------------------------------------------------------------------------- */
 
