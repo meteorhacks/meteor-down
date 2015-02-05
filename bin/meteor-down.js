@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// set a high number for the maxSockets
+// we don't need pooling here
+require('http').globalAgent.maxSockets = 999999;
+
 var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
