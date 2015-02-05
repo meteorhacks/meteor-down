@@ -16,23 +16,22 @@ if(!filePath) {
   process.exit(1);
 }
 
-var mdown = new MeteorDown();
+var meteorDown = new MeteorDown();
 
 // run the script
 var content = fs.readFileSync(filePath).toString();
 var context = {
-  global: global,
   require: require,
-  mdown: mdown,
-  process: process
+  meteorDown: meteorDown
 };
+_.extend(context, global);
 vm.runInNewContext(content, context);
 
 /* ------------------------------------------------------------------------- */
 
 setInterval(function () {
-  printStats(mdown.stats.get());
-  mdown.stats.reset();
+  printStats(meteorDown.stats.get());
+  meteorDown.stats.reset();
 }, 1000*5);
 
 /* ------------------------------------------------------------------------- */
@@ -41,7 +40,7 @@ function showHelp () {
   // TODO improve help and CLI interface
   console.log(
     'USAGE:\n'+
-    '  mdown <path-to-script>\n'
+    '  meteor-down <path-to-script>\n'
   );
 }
 

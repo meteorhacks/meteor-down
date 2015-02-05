@@ -1,75 +1,107 @@
 MeteorDown
 ==========
 
-MeteorDown is a load testing framework for Meteor server side components. It uses the DDP protocol to communicate with the Meteor application but provides much familiar interface for developers.
+MeteorDown is a load testing tool for Meteor server side components. It uses the DDP protocol to communicate with the Meteor application. You can write your load test in JavaScript and let MeteorDown to invoke it.
 
 Installation
 ------------
 
-    npm -g i meteor-down
+~~~shell
+npm -g i meteor-down
+~~~
 
-Install MeteorDown globally to make the `mdown` command available. It's easier to run tests this way because you don't have to install the npm module everywhere. If you use the `mdown` command, it will also log useful performance statistics every 5 seconds.
-
-The following mdown script will call an `example-method` with default options. Checkout the [writing tests](#writing-tests) section below and [examples](#examples) to learn how to write tests.
+The following meteor-down script will call an `example-method` with default options. Checkout the [writing tests](#writing-tests) section below and [examples](#examples) to learn how to write tests.
 
 ~~~js
-mdown.init(function (Meteor) {
+meteorDown.init(function (Meteor) {
   Meteor.call('example-method', function (error, result) {
     Meteor.kill();
   });
 });
 
-mdown.run();
+meteorDown.run({
+  concurrency: 10,
+  url: "http://localhost:3000"
+});
 ~~~
 
 Client API
 ----------
 
-Writing tests is made similar to writing Meteor client side code. It's still limited to method calls and subscriptions but more features will be added soon. The function given to `mdown.init` will receive the ddp client as the first argument. This ddp client is based on [node-ddp-client](https://github.com/oortcloud/node-ddp-client) but with some changes to make it more Meteor like. This client will be already connected to the Meteor application (and authenticated if necessary options are given). Let's name the ddp client Meteor.
+With the MeteorDown script, you can call methods and invoke subscriptions. The function given to `meteorDown.init` will receive the ddp client as the first argument.
+
+This ddp client is based on [node-ddp-client](https://github.com/oortcloud/node-ddp-client) but with some changes to make it more Meteor like. Let's look at APIs:
 
 ###Meteor.call
 
-    Meteor.call ('name'[, args*], callback)
+~~~js
+Meteor.call('name'[, args*], callback)
+~~~
 
 Call a Meteor method. Just like the browser client, the callback will receive 2 arguments Error and the Result.
 
 ###Meteor.subscribe
 
-    Meteor.subscribe ('name'[, args*], callback)
+~~~js
+Meteor.subscribe('name'[, args*], callback)
+~~~
 
 The callback function will be called when the subscription is ready and all initial data is loaded to the client.
 
 ###Meteor.kill
 
-    Meteor.kill()
+~~~js
+Meteor.kill()
+~~~
 
-Disconnect from the server. As soon as this is called, another client will connect to the server and run load test code.
+Disconnect the current client from the server. As soon as this is called, another client will connect to the server and run load test code.
 
 ###Meteor.collections
 
-    var Collection = Meteor.collections['name']
+~~~js
+var Collection = Meteor.collections['name']
+~~~
 
 A dictionary of all client side collections. Data received from subscriptions will be available here.
 
 Authentication
 --------------
 
-You can use login using Meteor `login` method with valid crednentials or you can let MeteorDown handle it for you. Simply install the `meteorhacks:meteordown` smart package on your application and start it with `METEOR_DOWN_KEY` environment variable set to a random secret string.
+Normally, most of the Meteor methods and subscriptions are only available for  loggedIn users. So, we can't directly invoke those methods and subscriptions. MeteorDown has a solution for that.
 
-    meteor add meteorhacks:meteor-down
-    export METEOR_DOWN_KEY='YOUR_SUPER_SECRET_KEY'
-    meteor
-
-When running the test, give that random key and a list of userIds with options. When connecting each client, MeteorDown will randomly use available userIds and log into the application before running code given by user.
+First you need to install the following package:
 
 ~~~js
-mdown.run({
+meteor add meteorhacks:meteor-down 
+~~~
+
+Then you need to start your Meteor app with a key. That could be anything you like. But it's better to have a hard to guess key.
+
+~~~js
+export METEOR_DOWN_KEY='YOUR_SUPER_SECRET_KEY'
+meteor
+~~~
+
+Now, add that key to your MeteorDown script and tell which users you need to authenticated against the load test. This is how you can do it.
+
+~~~js
+meteorDown.run({
+  concurrency: 10,
+  url: "http://localhost:3000", 
   key: 'YOUR_SUPER_SECRET_KEY',
-  auth: {userId: ['JydhwL4cCRWvt3TiY', 'bg9MZZwFSf8EsFJM4']}
+  auth: {userIds: ['JydhwL4cCRWvt3TiY', 'bg9MZZwFSf8EsFJM4']}
 })
 ~~~
 
-The smart package allows users to login with their userId and the MeteorDown key so make sure the key is never available to the public. Or install the smart package only when you're running a load test.
+Then all your method calls and subscriptions will be authenticated for one of the user mentioned above.
+
+You can also get the loggedIn user's userId by invoking `Meteor.userId()` as shown below:
+
+~~~js
+meteorDown.init(function (Meteor) {
+  console.log("userId is:", Meteor.userId());
+})
+~~~
 
 Options
 -------
@@ -77,7 +109,7 @@ Options
 All test options are optional therefor it's perfectly okay to call `mdown.run` without any arguments. All available arguments and their default values are given below.
 
 ~~~js
-mdown.run({
+meteorDown.run({
   concurrency: 10,
   url: 'http://localhost:3000',
   key: undefined,
@@ -85,22 +117,32 @@ mdown.run({
 });
 ~~~
 
-###concurrency
+#### concurrency
 
 The maximum number of clients connects to the application at any given time. The real number of concurrent connections can be lower than this number.
 
-###url
+#### url
 
 Meteor application url.
 **NOTE: This should only have the domain and the port (example: localhost:3000). Meteor-down does not support routes at the moment.**
 
-###key
+#### key
 
 The secret key to use for MeteorDown authentication.
 
-###auth
+#### auth
 
 Authentication information. Currently MeteorDown only supports login by userId.
+
+Using Custom Node Modules
+--------
+Currently, there is no direct support for that. But you could do it very easily. Let's say you've installed couple npm modules on the current directory. Then, you'll have a node_modules directory in the current directory.
+
+Invoke MeteorDown like this and you'll access those npm modules by requiring them inside the MeteorDown script.
+
+~~~shell
+NODE_PATH=./node_modules meteor-down myMeteorDownScript.js
+~~~
 
 Examples
 --------
@@ -116,7 +158,7 @@ Meteor.methods({
 
 ~~~js
 // MeteorDown Script
-mdown.init(function (Meteor) {
+meteorDown.init(function (Meteor) {
   Meteor.call('add', 5, 6, function (err, res) {
     console.log('5 + 6 is ' + res);
     Meteor.kill();
@@ -136,7 +178,7 @@ Meteor.publish({
 
 ~~~js
 // MeteorDown Script
-mdown.init(function (Meteor) {
+meteorDown.init(function (Meteor) {
   Meteor.subscribe('allitems', function () {
     console.log('Subscription is ready');
     console.log(Meteor.collections.items);
