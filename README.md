@@ -1,6 +1,8 @@
 MeteorDown
 ==========
 
+[![Build Status](https://travis-ci.org/meteorhacks/meteor-down.svg?branch=master)](https://travis-ci.org/meteorhacks/meteor-down)
+
 MeteorDown is a load testing tool for Meteor server side components. It uses the DDP protocol to communicate with the Meteor application. You can write your load test in JavaScript and let MeteorDown to invoke it.
 
 Installation
@@ -72,7 +74,7 @@ Normally, most of the Meteor methods and subscriptions are only available for  l
 First you need to install the following package:
 
 ~~~js
-meteor add meteorhacks:meteor-down 
+meteor add meteorhacks:meteor-down
 ~~~
 
 Then you need to start your Meteor app with a key. That could be anything you like. But it's better to have a hard to guess key.
@@ -87,7 +89,7 @@ Now, add that key to your MeteorDown script and tell which users you need to aut
 ~~~js
 meteorDown.run({
   concurrency: 10,
-  url: "http://localhost:3000", 
+  url: "http://localhost:3000",
   key: 'YOUR_SUPER_SECRET_KEY',
   auth: {userIds: ['JydhwL4cCRWvt3TiY', 'bg9MZZwFSf8EsFJM4']}
 })
