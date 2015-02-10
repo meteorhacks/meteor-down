@@ -1,7 +1,5 @@
-MeteorDown
+MeteorDown [![Build Status](https://travis-ci.org/meteorhacks/meteor-down.svg?branch=master)](https://travis-ci.org/meteorhacks/meteor-down)
 ==========
-
-[![Build Status](https://travis-ci.org/meteorhacks/meteor-down.svg?branch=master)](https://travis-ci.org/meteorhacks/meteor-down)
 
 MeteorDown is a load testing tool for Meteor server side components. It uses the DDP protocol to communicate with the Meteor application. You can write your load test in JavaScript and let MeteorDown to invoke it.
 
