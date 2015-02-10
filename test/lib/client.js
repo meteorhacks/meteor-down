@@ -87,7 +87,7 @@ suite('Client', function () {
     });
 
     test('_getLoginParams', function () {
-      var mock = {options: {key: 'K', auth: {userId: [1, 2, 3, 4, 5]}}};
+      var mock = {options: {key: 'K', auth: {userIds: [1, 2, 3, 4, 5]}}};
       mock._pickRandom = function () {return 5};
       var params = Client.prototype._getLoginParams.call(mock);
       assert.deepEqual(params, ['K', {userId: 5}]);
