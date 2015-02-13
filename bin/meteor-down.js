@@ -24,7 +24,12 @@ var context = {
   require: require,
   meteorDown: meteorDown
 };
-_.extend(context, global);
+
+// important: getOwnPropertyNames can get both enumerables and non-enumerables
+Object.getOwnPropertyNames(global).forEach(function (key) {
+  context[key] = global[key];
+});
+
 vm.runInNewContext(content, context);
 
 /* ------------------------------------------------------------------------- */
