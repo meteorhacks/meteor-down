@@ -10,7 +10,7 @@ Installation
 npm -g i meteor-down
 ~~~
 
-The following meteor-down script will call an `example-method` with default options. Checkout the [writing tests](#writing-tests) section below and [examples](#examples) to learn how to write tests.
+Then create a file called `my_load_test.js` with the following content.
 
 ~~~js
 meteorDown.init(function (Meteor) {
@@ -24,6 +24,13 @@ meteorDown.run({
   url: "http://localhost:3000"
 });
 ~~~
+
+Then invoke the load test with:
+
+~~~shell
+meteor-down my_load_test.js
+~~~
+
 
 Client API
 ----------
