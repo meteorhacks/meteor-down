@@ -10,7 +10,7 @@ Installation
 npm i -g meteor-down
 ~~~
 
-Then create a file called `my_load_test.js` with the following content.
+Then create a file called `my_load_test.js` with the following content:
 
 ~~~js
 meteorDown.init(function (Meteor) {
