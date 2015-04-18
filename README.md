@@ -7,7 +7,7 @@ Installation
 ------------
 
 ~~~shell
-npm -g i meteor-down
+npm i -g meteor-down
 ~~~
 
 Then create a file called `my_load_test.js` with the following content.
