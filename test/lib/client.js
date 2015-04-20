@@ -6,13 +6,13 @@ var Client = require('../../lib/client.js');
 suite('Client', function () {
   suite('constructor', function () {
     test('inherit from ddp', function () {
-      var mock = {};
-      Client.call(mock, {url: 'http://localhost:5000', stats: 's'});
+      var mock = _.extend(Client.prototype);
+      Client.call(Client.prototype, {url: 'http://localhost:5000', stats: 's'});
       assert.equal(mock.ddpVersion, 1);
     });
 
     test('additional fields', function () {
-      var mock = {};
+      var mock = _.extend(Client.prototype);
       var opts = {url: 'http://localhost:5000', stats: 's'};
       Client.call(mock, opts);
       assert.equal(mock.options, opts);
@@ -55,6 +55,52 @@ suite('Client', function () {
     test('with callback')
 
     test('with arguments')
+  });
+
+  suite('_urlToDDPOptions', function() {
+    test('http url with port specified', function() {
+      var url = "http://somehost:3000";
+      var ddpOptions = Client.prototype._urlToDDPOptions(url);
+      assert.deepEqual(ddpOptions, {
+        path: "",
+        host: "somehost",
+        port: 3000,
+        use_ssl: false
+      });
+    });
+
+    test('https url with port specified', function() {
+      var url = "https://somehost:3000";
+      var ddpOptions = Client.prototype._urlToDDPOptions(url);
+      assert.deepEqual(ddpOptions, {
+        path: "",
+        host: "somehost",
+        port: 3000,
+        use_ssl: true
+      });
+    });
+
+    test('http url without port specified', function() {
+      var url = "http://somehost";
+      var ddpOptions = Client.prototype._urlToDDPOptions(url);
+      assert.deepEqual(ddpOptions, {
+        path: "",
+        host: "somehost",
+        port: 80,
+        use_ssl: false
+      });
+    });
+
+    test('https url without port specified', function() {
+      var url = "https://somehost";
+      var ddpOptions = Client.prototype._urlToDDPOptions(url);
+      assert.deepEqual(ddpOptions, {
+        path: "",
+        host: "somehost",
+        port: 443,
+        use_ssl: true
+      });
+    });
   });
 
   suite('user information', function () {
