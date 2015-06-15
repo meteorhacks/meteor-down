@@ -9,6 +9,7 @@ var _ = require('underscore');
 var fs = require('fs');
 var util = require('util');
 var MeteorDown = require('../');
+var coffee = require( "coffee-script" )
 
 var filePath = process.argv[2];
 if(!filePath) {
@@ -20,6 +21,9 @@ var meteorDown = new MeteorDown();
 
 // run the script
 var content = fs.readFileSync(filePath).toString();
+
+if( filePath.substr(-6) == 'coffee' ) content = coffee.compile( content );
+
 var context = {
   require: require,
   meteorDown: meteorDown

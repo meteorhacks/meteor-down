@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "ddp": "0.10.x",
-    "underscore": "1.7.x"
+    "underscore": "1.7.x",
+    "coffee-script": "1.9.x"
   }
 }
